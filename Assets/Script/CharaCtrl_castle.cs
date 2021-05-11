@@ -22,6 +22,8 @@ public class CharaCtrl_castle : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     public AudioSource bgmSource;
+    public AudioClip bgm_Glitch;
+    public AudioSource crashSound;
 
     // Start is called before the first frame update
     void Start()
@@ -86,12 +88,16 @@ public class CharaCtrl_castle : MonoBehaviour
             mainCam.transform.SetParent(gameObject.transform, true);
             has_fell = true;
             bgmSource.Stop();
+            //
             //M_camera.GetComponent<AudioListener>().enabled = false;
         }
-        else if (has_fell == true)
+        else if (has_fell == true && bgmSource.isPlaying==false)
         {
 
             mainCam.transform.SetParent(warningSign.gameObject.transform, true);
+            crashSound.PlayOneShot(crashSound.clip);
+            bgmSource.clip = bgm_Glitch;
+            bgmSource.Play();
             //M_camera.GetComponent<AudioListener>().enabled = true;
 
         }
@@ -134,6 +140,7 @@ public class CharaCtrl_castle : MonoBehaviour
         RaycastHit2D raycast = Physics2D.BoxCast(collider_avatar.bounds.center, collider_avatar.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
         return raycast.collider == null;
     }
+    
 
 
 }

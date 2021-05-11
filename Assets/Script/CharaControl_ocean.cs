@@ -30,10 +30,12 @@ public class CharaControl_ocean : MonoBehaviour
     private float depth_unit = 0.05f;
     private float depth_real = 0f;
 
-    //public GameObject panel;
+    //
     private Rigidbody2D rigidSphere;
 
     public static bool isHeal;
+    public AudioSource seaweedConsume;
+    public AudioSource pushButton;
 
     private Vector3 initialTransform;
     public static bool reset = false;
@@ -49,6 +51,11 @@ public class CharaControl_ocean : MonoBehaviour
         subm_initial= submarine.GetComponent<Transform>().position;
         rigidSphere = player.GetComponent<Rigidbody2D>();
 
+    }
+
+    private void Update()
+    {
+        //Time.timeScale = 0;
     }
 
 
@@ -80,13 +87,12 @@ public class CharaControl_ocean : MonoBehaviour
         }
 
 
-        //Vector2 screenPosition_E = Camera.main.WorldToScreenPoint(randomEnemy.transform.position);
+
+
         Vector2 screenPosition_P = Camera.main.WorldToScreenPoint(player.transform.position);
 
-
-
        
-        // movement control
+        // Bubble Movement control
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
 
             Vector3 newVelocity = rigidSphere.velocity;
@@ -166,22 +172,29 @@ public class CharaControl_ocean : MonoBehaviour
             spawn_o2 = false;
         }
 
-        if (Input.GetKey(KeyCode.E) && isHeal == true)
-        {
+        // Consume Seaweed
 
-            
-            if (o2_real < 800f)
-            {
-                o2_real += 200f;
+        if (Input.GetKey(KeyCode.E))
+        {
+            pushButton.Play();
+
+            if (isHeal == true) {
+                seaweedConsume.Play();
+
+                if (o2_real < 800f)
+                {
+                    o2_real += 200f;
+                }
+                else {
+                    o2_real = 1000f;
+                }
+
+                Destroy(randomHealth.gameObject);
+                is_consumed = true;
+                seaweedCounter++;
+                o2_Timer = 0f;
+
             }
-            else {
-                o2_real = 1000f;
-            }
-            
-            Destroy(randomHealth.gameObject);
-            is_consumed = true;
-            seaweedCounter++;
-            o2_Timer = 0f;
         }
 
         if (o2_num <=0) {
@@ -213,6 +226,19 @@ public class CharaControl_ocean : MonoBehaviour
 
         if (reset == true) {
 
+            initialize_ocean();
+
+            Debug.Log("reset");
+
+        }
+
+       
+
+
+    }
+
+    void initialize_ocean() {
+
             o2_Timer = 0f;
             player.GetComponent<Transform>().position = initialTransform;
             depth_real = 0f;
@@ -224,17 +250,7 @@ public class CharaControl_ocean : MonoBehaviour
             seaweedCounter = 0;
             initialize_text.text = "Press E to collect!";
             reset = false;
-
-            Debug.Log("reset");
-
-        }
-
-
-
-
     }
-
-
 
 
 

@@ -10,9 +10,13 @@ public class BubbleCollide : MonoBehaviour
     public Sprite[] button_bbl;
     public string[] floatText_cnt_bbl;
     public Text textField;
+    public GameObject fillObject;
+    
 
     private RectTransform rt_words;
     private int cntNum;
+
+    private bool isFishCooldown = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,11 +60,14 @@ public class BubbleCollide : MonoBehaviour
             CharaControl_ocean.isHeal = true;
             
         }
-        if (collision.CompareTag("fish"))
+        if (collision.CompareTag("fish") && isFishCooldown == false)
         {
+
+            StartCoroutine(collideCooldown());
             CharaControl_ocean.o2_real -= 60f;
-            AudioSource au=gameObject.GetComponent<AudioSource>();
+            AudioSource au = gameObject.GetComponent<AudioSource>();
             au.Play();
+            StartCoroutine(collideFlash());
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -70,4 +77,29 @@ public class BubbleCollide : MonoBehaviour
             CharaControl_ocean.isHeal = false;
         }
     }
-}
+
+    IEnumerator collideFlash() {
+
+        Color bubbleColor = GetComponent<SpriteRenderer>().color;
+        Color fillColor = fillObject.GetComponent<Image>().color;
+
+        yield return new WaitForSeconds(0.08f);
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(215f/255f, 74f / 255f, 77f / 255f, 1);
+        fillObject.GetComponent<Image>().color = new Color(215f / 255f, 74f / 255f, 77f / 255f, 1);
+        yield return new WaitForSeconds(0.2f);
+        gameObject.GetComponent<SpriteRenderer>().color = bubbleColor;
+        fillObject.GetComponent<Image>().color = fillColor;
+
+    }
+
+    IEnumerator collideCooldown() {
+
+        isFishCooldown = true;
+        yield return new WaitForSeconds(0.5f);
+        isFishCooldown = false;
+
+    }
+    
+
+
+    }
