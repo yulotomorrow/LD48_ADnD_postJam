@@ -9,6 +9,10 @@ public class CharaCtrl_void : MonoBehaviour
 
     public Sprite xy_sprite;
     public Sprite xz_sprite;
+    public ParticleSystem pixels;
+    public ParticleSystem pixels_words;
+    public AudioSource xy_sound;
+    public AudioSource xz_sound;
 
     public GameObject floatText;
     public Text floatText_cnt;
@@ -46,6 +50,7 @@ public class CharaCtrl_void : MonoBehaviour
 
     }
 
+    private bool is_cooldown = false;
     private float moveSpeed= 0.08f;
     // Update is called once per frame
     void FixedUpdate()
@@ -55,6 +60,7 @@ public class CharaCtrl_void : MonoBehaviour
 
         is_start_void = fc_void.GetBooleanVariable("isStart_scene3") && (!RabbitHoleCollide.isHole);
 
+        // movement control, lock movement at beginning
         if (is_start_void == true)
         {
 
@@ -136,6 +142,7 @@ public class CharaCtrl_void : MonoBehaviour
 
         }
 
+        // free fall
         if (RabbitHoleCollide.isHole == true) {
             coordinate_z = CoordinateGenertae.depth_real;
         }
@@ -145,23 +152,32 @@ public class CharaCtrl_void : MonoBehaviour
         coordinates.text = ("(" + Mathf.Round(coordinate_x * 3) + ", " + Mathf.Round(coordinate_y * 3)
             + ", " + Mathf.Round(coordinate_z * 3) + ")");
 
-
-        if (switchingXZ == true)
+        // change form
+        if (Input.GetKey(KeyCode.E) && is_cooldown == false)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (switchingXZ == true)
             {
+ 
+                StartCoroutine(cooldown());
                 gameObject.GetComponent<SpriteRenderer>().sprite = xz_sprite;
                 isXY = false;
+                xz_sound.Play();
+                pixels.Play();
+         
             }
-        }
-        else if (switchingXY == true)
-        {
-            if (Input.GetKey(KeyCode.E))
+            else if (switchingXY == true)
             {
+                if (get_coord == false) {
+                    pixels_words.Play();
+                }
+                StartCoroutine(cooldown());
                 gameObject.GetComponent<SpriteRenderer>().sprite = xy_sprite;
                 isXY = true;
                 get_coord = true;
-                Debug.Log(get_coord);
+                //Debug.Log(get_coord);
+                xy_sound.Play();
+                pixels.Play();
+                
             }
         }
 
@@ -207,6 +223,14 @@ public class CharaCtrl_void : MonoBehaviour
             switchingXY = false;
 
         }
+    }
+
+    IEnumerator cooldown(float time = 1f) {
+
+        is_cooldown = true;
+        yield return new WaitForSeconds(time);
+        is_cooldown = false;
+
     }
 
 }

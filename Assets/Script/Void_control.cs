@@ -13,6 +13,7 @@ public class Void_control : MonoBehaviour
     public GameObject map2;
     public ParticleSystem particles;
     public GameObject fall_audio;
+    public GameObject bgm_void;
     //public GameObject coordinate;
 
     public static int stageNum = 0;
@@ -69,6 +70,7 @@ public class Void_control : MonoBehaviour
             hole.SetActive(false);
             desk.SetActive(false);
             map2.SetActive(false);
+            bgm_void.SetActive(false);
             particles.gameObject.SetActive(true);
             fall_audio.SetActive(true);
 

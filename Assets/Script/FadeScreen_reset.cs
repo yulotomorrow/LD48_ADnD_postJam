@@ -18,10 +18,10 @@ public class FadeScreen_reset: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CharaControl_ocean.o2_num == 0) {
+        if (CharaControl_ocean.o2_num == 0 && CharaControl_ocean.reset == false) {
 
             //fadeScr = true;
-
+            //StopAllCoroutines();
             StartCoroutine(fadeNlight());
             
         }
@@ -32,11 +32,16 @@ public class FadeScreen_reset: MonoBehaviour
 
     IEnumerator fadeNlight() {
 
+        Time.timeScale = 0;
+        CharaControl_ocean.reset = true;
         StartCoroutine(fadeScreen(true));
-        yield return new WaitForSeconds(3);
+       // Debug.Log("fade");
+               
+        yield return new WaitForSecondsRealtime(3);
         
+        Time.timeScale = 1;
         StartCoroutine(fadeScreen(false));
-
+        yield return null;
     }
 
     IEnumerator fadeScreen(bool toFade = false, int fadespeed = 1) {
@@ -47,10 +52,11 @@ public class FadeScreen_reset: MonoBehaviour
 
             while (gameObject.GetComponent<SpriteRenderer>().color.a < 1) {
 
-                fadeAmount = screenColor.a + (fadespeed * Time.deltaTime/2);
+                fadeAmount = screenColor.a + (fadespeed * Time.unscaledDeltaTime/2);
 
                 screenColor = new Color(screenColor.r, screenColor.g, screenColor.b, fadeAmount);
                 gameObject.GetComponent<SpriteRenderer>().color = screenColor;
+
                 
                 yield return null;
             }
@@ -61,7 +67,7 @@ public class FadeScreen_reset: MonoBehaviour
             while (gameObject.GetComponent<SpriteRenderer>().color.a > 0)
             {
 
-                fadeAmount = screenColor.a - (fadespeed * Time.deltaTime/2);
+                fadeAmount = screenColor.a - (fadespeed * Time.unscaledDeltaTime / 2);
 
                 screenColor = new Color(screenColor.r, screenColor.g, screenColor.b, fadeAmount);
                 gameObject.GetComponent<SpriteRenderer>().color = screenColor;

@@ -549,7 +549,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4da361997a59f71438a2de8259819d08, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 36aefc59836e12b489637a02d8de3b17, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -779,7 +779,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 40bfd340818f2e247aacf49d92b02755, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5add352cd9c006c428740d94584a8848, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2447,10 +2447,14 @@ MonoBehaviour:
   player: {fileID: 625358467}
   health: {fileID: 1163418097}
   submarine: {fileID: 1490617960}
+  background: {fileID: 0}
   initialize_text: {fileID: 0}
+  bgm_ocean: {fileID: 0}
   o2Meter: {fileID: 1260195936}
   depth_UI: {fileID: 2036243049}
   generatePosition: {x: 0, y: 0, z: 0}
+  seaweedConsume: {fileID: 0}
+  pushButton: {fileID: 0}
 --- !u!4 &663004957
 Transform:
   m_ObjectHideFlags: 0

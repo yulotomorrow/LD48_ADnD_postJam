@@ -64,7 +64,7 @@ public class BubbleCollide : MonoBehaviour
         {
 
             StartCoroutine(collideCooldown());
-            CharaControl_ocean.o2_real -= 60f;
+            CharaControl_ocean.o2_real -= 75f;
             AudioSource au = gameObject.GetComponent<AudioSource>();
             au.Play();
             StartCoroutine(collideFlash());

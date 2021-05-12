@@ -10,8 +10,10 @@ public class CharaControl_ocean : MonoBehaviour
     public GameObject player;
     public GameObject health;
     public GameObject submarine;
+    public GameObject background;
     //public Text submarine_text;
     public Text initialize_text;
+    public AudioSource bgm_ocean;
 
     public Slider o2Meter;
     public Text depth_UI;
@@ -39,8 +41,9 @@ public class CharaControl_ocean : MonoBehaviour
 
     private Vector3 initialTransform;
     public static bool reset = false;
-    private float resetCount = 0f;
+    //private float resetCount = 0f;
     private Vector3 subm_initial;
+    private Vector3 bg_initial;
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +53,7 @@ public class CharaControl_ocean : MonoBehaviour
         initialTransform = player.GetComponent<Transform>().position;
         subm_initial= submarine.GetComponent<Transform>().position;
         rigidSphere = player.GetComponent<Rigidbody2D>();
-
+        bg_initial = background.GetComponent<Transform>().position;
     }
 
     private void Update()
@@ -73,8 +76,7 @@ public class CharaControl_ocean : MonoBehaviour
     void FixedUpdate()
     {
         
-        o2_Timer += Time.deltaTime;
-        //Debug.Log(enemyTimer);
+        o2_Timer += Time.deltaTime;        
 
         o2_real -= o2_unit;
         depth_real -= depth_unit;
@@ -85,7 +87,6 @@ public class CharaControl_ocean : MonoBehaviour
             is_consumed = false;
             o2_Timer = 0f;
         }
-
 
 
 
@@ -183,7 +184,7 @@ public class CharaControl_ocean : MonoBehaviour
 
                 if (o2_real < 800f)
                 {
-                    o2_real += 200f;
+                    o2_real += 225f;
                 }
                 else {
                     o2_real = 1000f;
@@ -202,19 +203,24 @@ public class CharaControl_ocean : MonoBehaviour
             o2_num = 0;
         }
 
+
+        // summon a wild LB ;)
+
         if (depth_real < -300) {
-            // value: 1000, on UI 10000
-            submarine.gameObject.SetActive(true);
+            //        
             submarine.GetComponent<Transform>().position = subm_initial;
+            submarine.gameObject.SetActive(true);
             // submarine_text.gameObject.SetActive(true);
 
 
         }
 
 
-        if (o2_num == 0)
+        // reset level
+
+        /*if (o2_num == 0)
         {
-            //fadeScr = true;
+            
             resetCount += Time.deltaTime;
             if (resetCount > 2.5)
             {
@@ -222,13 +228,12 @@ public class CharaControl_ocean : MonoBehaviour
                 resetCount = 0;
             }
 
-        }
+        }*/
 
         if (reset == true) {
 
             initialize_ocean();
-
-            Debug.Log("reset");
+            //Debug.Log("reset");
 
         }
 
@@ -249,6 +254,11 @@ public class CharaControl_ocean : MonoBehaviour
             submarine.gameObject.SetActive(false);
             seaweedCounter = 0;
             initialize_text.text = "Press E to collect!";
+            
+            background.GetComponent<Transform>().position = bg_initial;
+            bgm_ocean.Stop();
+            bgm_ocean.Play();
+        
             reset = false;
     }
 

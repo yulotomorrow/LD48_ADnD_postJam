@@ -1820,7 +1820,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1838148453}
   selectedCommands:
-  - {fileID: 1838148474}
+  - {fileID: 1838148463}
   variables: []
   description: 
   stepPause: 0
@@ -2114,7 +2114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 2
   indentLevel: 0
-  storyText: Welcome! But why are you wearing this strange coutume?
+  storyText: Welcome! But why are you wearing this strange costume?
   description: 
   character: {fileID: 623137259}
   portrait: {fileID: 21300000, guid: decadfa92d19b7c448b5962c18a032ae, type: 3}

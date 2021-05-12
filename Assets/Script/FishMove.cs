@@ -45,5 +45,18 @@ public class FishMove : MonoBehaviour
 
 
         }
+
+
+
+
+    }
+
+    private void Update()
+    {
+        //initialize
+        if (gameObject.GetComponent<Renderer>().isVisible == true && CharaControl_ocean.reset == true)
+        {
+            Destroy(gameObject);
+        }
     }
 }

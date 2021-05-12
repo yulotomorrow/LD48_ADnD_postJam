@@ -18,7 +18,7 @@ public class CoordinateGenertae : MonoBehaviour
     private Vector3 player_coord_R;
     public GameObject coord;
 
-    public static bool is_generated;
+    //public static bool is_generated = false;
     public static bool is_match;
 
     public GameObject fadeScr;
@@ -40,6 +40,7 @@ public class CoordinateGenertae : MonoBehaviour
         player_coord_R = new Vector3(Mathf.Round(CharaCtrl_void.coordinate_x * 3), Mathf.Round(CharaCtrl_void.coordinate_y * 3),
                             Mathf.Round(CharaCtrl_void.coordinate_z * 3));
 
+        // destination text
         if (CharaCtrl_void.get_coord == true) {
 
             destinaText.text = ("(" + coords[Void_control.stageNum].x + ", " + coords[Void_control.stageNum].y
@@ -49,15 +50,10 @@ public class CoordinateGenertae : MonoBehaviour
             destinaText.text = "Unknown";
         }
 
-        if (player_coord_R.z == coords[Void_control.stageNum].z && is_generated == false) {
 
-            Instantiate(coord, new Vector3(coords[Void_control.stageNum].x/3, coords[Void_control.stageNum].y/3,
-                coords[Void_control.stageNum].z/3),Quaternion.identity);
-                is_generated = true;
-        }
-
+        // match coordinate 
         if (player_coord_R.x == coords[Void_control.stageNum].x && player_coord_R.y == coords[Void_control.stageNum].y &&
-            player_coord_R.z == coords[Void_control.stageNum].z)
+            player_coord_R.z == coords[Void_control.stageNum].z && CharaCtrl_void.get_coord == true)
         {
 
             is_match = true;
@@ -66,15 +62,6 @@ public class CoordinateGenertae : MonoBehaviour
             is_match = false;
         }
 
-        
-        if (is_match == true)
-            {
-                Void_control.stageNum++;
-                
-                CharaCtrl_void.get_coord = false;
-                is_generated = false;
-                is_match = false;
-            }
 
 
 
@@ -84,9 +71,9 @@ public class CoordinateGenertae : MonoBehaviour
             Debug.Log(depth_real);
             //play falling animation
 
-            if (depth_real < -5000f)
+            if (depth_real < -4000f)
             {
-                StartCoroutine(fadeScreen(true));
+                StartCoroutine(fadeScreen(true, 1, 2, true));
                 
             }
         }
@@ -96,9 +83,34 @@ public class CoordinateGenertae : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+
+        if (is_match == true)
+        {
+            Void_control.stageNum++;
+            StartCoroutine(fadeNlight());
+            CharaCtrl_void.get_coord = false;
+            //is_generated = false;
+            is_match = false;
+        }
+
+    }
+
 
     float fadeAmount;
-    IEnumerator fadeScreen(bool toFade = false, int fadespeed = 1)
+
+
+    IEnumerator fadeNlight(float duration = 1f)
+    {
+        Time.timeScale = 0;
+        StartCoroutine(fadeScreen(true, 3, 0, false));
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = 1;
+        StartCoroutine(fadeScreen(false, 3, 0, false));
+
+    }
+    IEnumerator fadeScreen(bool toFade = false, int fadespeed = 1, float wait = 0.3f, bool toNext = false)
     {
 
         Color screenColor = fadeScr.GetComponent<SpriteRenderer>().color;
@@ -109,12 +121,16 @@ public class CoordinateGenertae : MonoBehaviour
             while (fadeScr.GetComponent<SpriteRenderer>().color.a < 1)
             {
 
-                fadeAmount = screenColor.a + (fadespeed * Time.deltaTime/3);
+                fadeAmount = screenColor.a + (fadespeed * Time.unscaledDeltaTime/3);
 
                 screenColor = new Color(screenColor.r, screenColor.g, screenColor.b, fadeAmount);
                 fadeScr.GetComponent<SpriteRenderer>().color = screenColor;
-                yield return new WaitForSeconds(2);
-                SceneManager.LoadScene("Scene4_glitch", LoadSceneMode.Single);
+                yield return new WaitForSecondsRealtime(wait);
+
+                if (toNext == true)
+                {
+                    SceneManager.LoadScene("Scene4_glitch", LoadSceneMode.Single);
+                }
                 //yield return null;
             }
         }
@@ -124,7 +140,7 @@ public class CoordinateGenertae : MonoBehaviour
             while (fadeScr.GetComponent<SpriteRenderer>().color.a > 0)
             {
 
-                fadeAmount = screenColor.a - (fadespeed * Time.deltaTime);
+                fadeAmount = screenColor.a - (fadespeed * Time.unscaledDeltaTime / 3);
 
                 screenColor = new Color(screenColor.r, screenColor.g, screenColor.b, fadeAmount);
                 fadeScr.GetComponent<SpriteRenderer>().color = screenColor;

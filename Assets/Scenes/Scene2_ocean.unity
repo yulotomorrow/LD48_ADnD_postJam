@@ -6517,8 +6517,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.022197306, y: 0.022200413}
-  m_Size: {x: 1.5924267, y: 0.57109165}
+  m_Offset: {x: 0.20479286, y: 0.059662554}
+  m_Size: {x: 1.2272424, y: 0.38378155}
   m_Direction: 1
 --- !u!114 &563192169
 MonoBehaviour:
@@ -12031,7 +12031,9 @@ MonoBehaviour:
   player: {fileID: 625358467}
   health: {fileID: 1163418097}
   submarine: {fileID: 1490617960}
+  background: {fileID: 367772739}
   initialize_text: {fileID: 164176959}
+  bgm_ocean: {fileID: 1630268623}
   o2Meter: {fileID: 1260195936}
   depth_UI: {fileID: 2036243049}
   generatePosition: {x: 0, y: 0, z: 0}
